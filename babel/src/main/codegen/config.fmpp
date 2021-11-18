@@ -29,6 +29,8 @@ data: {
     imports: [
       "org.apache.calcite.sql.SqlCreate",
       "org.apache.calcite.sql.babel.SqlBabelCreateTable",
+      "org.apache.calcite.sql.babel.json.JsonLibraryFunctions",
+      "org.apache.calcite.sql.babel.json.JsonOperator",
       "org.apache.calcite.sql.babel.TableCollectionType",
       "org.apache.calcite.sql.ddl.SqlDdlNodes",
     ]
@@ -545,12 +547,17 @@ data: {
     # Example: "< INFIX_CAST: \"::\" >".
     binaryOperatorsTokens: [
       "< INFIX_CAST: \"::\" >"
+      "< JSON_ELEM_OP: \"->\" >"
+      "< JSON_ELEM_TEXT_OP: \"->>\" >"
+      "< JSON_PATH_OP: \"#>\" >"
+      "< JSON_PATH_TEXT_OP: \"#>>\" >"
     ]
 
     # Binary operators initialization.
     # Example: "InfixCast".
     extraBinaryExpressions: [
       "InfixCast"
+      "PostgresJsonOp"
     ]
 
     # List of files in @includes directory that have parser method

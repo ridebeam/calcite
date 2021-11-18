@@ -194,3 +194,52 @@ void InfixCast(List<Object> list, ExprContext exprContext, Span s) :
         list.add(dt);
     }
 }
+
+/** Parses the json_value "->" operator used in PostgresSQL
+SqlBinaryOperator JsonRowOperator() :
+{
+    SqlBinaryOperator op;
+}
+{
+    <JSON_ELEM_OP> { return JsonLibraryFunctions.JSON_ELEM; }
+}*/
+
+/*void JsonElemArrayOp(List<Object> list, ExprContext exprContext, Span s) :
+{
+   final SqlDataTypeSpec dt;
+}
+{
+    <JSON_ARRAY_PATH_OP> {
+                    checkNonQueryExpression(exprContext);
+                    list.add(new SqlParserUtil.ToTreeListItem(JsonLibraryFunctions.JSON_ELEM_ARRAY, getPos()));
+                }
+    Expression2b(ExprContext.ACCEPT_SUB_QUERY, list)
+
+}*/
+
+void PostgresJsonOp(List<Object> list, ExprContext exprContext, Span s) :
+ {
+    final SqlDataTypeSpec dt;
+ }
+ {
+     <JSON_ELEM_OP> {
+         checkNonQueryExpression(exprContext);
+         list.add(new SqlParserUtil.ToTreeListItem(JsonLibraryFunctions.JSON_ELEM, getPos()));
+     }
+     Expression2b(ExprContext.ACCEPT_SUB_QUERY, list)
+   | <JSON_ELEM_TEXT_OP> {
+          checkNonQueryExpression(exprContext);
+          list.add(new SqlParserUtil.ToTreeListItem(JsonLibraryFunctions.JSON_ELEM_TEXT, getPos()));
+      }
+      Expression2b(ExprContext.ACCEPT_SUB_QUERY, list)
+   | <JSON_PATH_OP> {
+         checkNonQueryExpression(exprContext);
+         list.add(new SqlParserUtil.ToTreeListItem(JsonLibraryFunctions.JSON_PATH, getPos()));
+     }
+     Expression2b(ExprContext.ACCEPT_SUB_QUERY, list)
+   | <JSON_PATH_TEXT_OP> {
+         checkNonQueryExpression(exprContext);
+         list.add(new SqlParserUtil.ToTreeListItem(JsonLibraryFunctions.JSON_PATH_TEXT, getPos()));
+     }
+     Expression2b(ExprContext.ACCEPT_SUB_QUERY, list)
+}
